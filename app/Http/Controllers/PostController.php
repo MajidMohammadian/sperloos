@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Http\Requests\Post\Store as RequestStore;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use \Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PostController extends Controller
 {
@@ -29,19 +32,27 @@ class PostController extends Controller
      * Show the form for creating a new resource.
      *
      * @return Response
+     * @throws HttpException
+     * @throws NotFoundHttpException
      */
     public function create()
     {
-        //
+        $user_id = auth()->id();
+
+        if($user_id % 2 == 0) {
+            return view('post.create');
+        } else {
+            abort(402, 'User not authorized');
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  RequestStore  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(RequestStore $request)
     {
         $form_data = $request->all();
 
@@ -49,21 +60,20 @@ class PostController extends Controller
 
         $post->title = $form_data['title'];
         $post->content = $form_data['content'];
-        $post->image = $form_data['image'];
-        $post->thumbnail = $form_data['thumbnail'];
+        $post->image = $post->addFromMediaLibraryRequest($request->get('image'))->toMediaCollection('image');
 
         $post->save();
 
-        return response()->json([
-            'message' => 'post store'
-        ]);
+        return redirect(route('post.index'))->with('success', 'post created!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
+     * @throws ModelNotFoundException
      */
     public function show($id)
     {
@@ -75,8 +85,10 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
+     * @throws ModelNotFoundException
      */
     public function edit($id)
     {
@@ -88,9 +100,11 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param Request $request
+     * @param int     $id
+     *
      * @return Response
+     * @throws ModelNotFoundException
      */
     public function update(Request $request, $id)
     {

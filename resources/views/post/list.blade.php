@@ -15,7 +15,15 @@
 
 @section('content')
     <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success">
+                @lang(session('success'))
+            </div>
+        @endif
         <div class="col">
+            @if(auth()->id() % 2 == 0)
+                <a href="post/create" class="btn btn-primary">Add Post</a>
+            @endif
             <table class="table table-striped">
                 <thead>
                 <tr>
