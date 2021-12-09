@@ -7,6 +7,7 @@ use App\Http\Requests\Post\Store as RequestStore;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -60,9 +61,12 @@ class PostController extends Controller
 
         $post->title = $form_data['title'];
         $post->content = $form_data['content'];
-        $post->image = $post->addFromMediaLibraryRequest($request->get('image'))->toMediaCollection('image');
 
         $post->save();
+
+        $file_name = Str::random(20) . '-' . microtime() . '.' . request()->file('image')->getClientOriginalExtension();
+
+        $post->addMediaFromRequest('image')->setFileName($file_name)->toMediaCollection('post.image');
 
         return redirect(route('post.index'))->with('success', 'post created!');
     }
@@ -77,6 +81,12 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        $post = (new Post)->loadMedia('post.image');
+        echo '<pre dir="ltr">';
+        var_dump($post);
+        echo '</pre>';
+        die();
+
         $post = Post::query()->findOrFail($id);
 
         return response()->json($post->toArray());

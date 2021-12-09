@@ -24,7 +24,6 @@
                     @endif
                 </div>
                 <div class="mb-3">
-                    <x-media-library-attachment name="image"/>
                     <label for="exampleInputImage" class="form-label">Image</label>
                     <input type="file" name="image" class="form-control" id="exampleInputImage" aria-describedby="imageHelp">
                     @if ($errors->has('image'))
@@ -38,8 +37,8 @@
 @endsection
 
 @section('style')
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.min.js" defer></script>
 @endsection
 
 @section('script')
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.6.0/dist/alpine.min.js" defer></script>
 @endsection

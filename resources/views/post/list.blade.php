@@ -54,31 +54,6 @@
             </table>
         </div>
     </div>
-    <div class="modal" tabindex="-1" id="modal-create">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modal create</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Title</label>
-                        <input type="hidden" class="form-control" id="input-modal-edit-id">
-                        <input type="text" class="form-control" id="input-modal-edit-title">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Content</label>
-                        <textarea class="form-control" id="input-modal-edit-content" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btn-save-modal-edit">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="modal" tabindex="-1" id="modal-show">
         <div class="modal-dialog">
             <div class="modal-content">
